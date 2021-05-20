@@ -106,20 +106,20 @@ public class PmemKV extends DB {
     synchronized(PmemKV.class) {
       if (db == null) {
         Properties props = getProperties();
-        String engineName = props.getProperty(ENGINE_PROPERTY);
-        if (engineName == null) {
-          engineName = "cmap";
-        }
+        // use cmap as default engine
+        String engineName = props.getProperty(ENGINE_PROPERTY, "cmap");
+
         String path = props.getProperty(PATH_PROPERTY);
         if (path == null) {
-          throw new DBException(PATH_PROPERTY + " is obligatory to run");
+          throw new DBException(PATH_PROPERTY + " is obligatory to run PmemKV client");
         }
         String size = props.getProperty(SIZE_PROPERTY);
         if (size == null) {
-          throw new DBException(SIZE_PROPERTY + " is obligatory to run");
+          throw new DBException(SIZE_PROPERTY + " is obligatory to run PmemKV client");
         }
         boolean startError = false;
         try {
+          // try to open db first
           db = new Database.Builder<byte[], Map<String, ByteIterator>>(engineName)
               .setSize(Long.parseLong(size))
               .setPath(path)
@@ -131,6 +131,7 @@ public class PmemKV extends DB {
         }
         if (startError) {
           try {
+            // or create it, if it doesn't exist
             db = new Database.Builder<byte[], Map<String, ByteIterator>>(engineName)
                 .setSize(Long.parseLong(size))
                 .setPath(path)
