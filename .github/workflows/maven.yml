@@ -4,16 +4,9 @@
 name: Java CI with Maven
 
 on:
+  pull_request:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "Manual trigger"
-        required: false
-        default: "Trigger"
 
 defaults:
   run:
