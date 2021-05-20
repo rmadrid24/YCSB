@@ -27,5 +27,8 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: Build YCSB
-      run: mvn package
+    - name: Install libpmemkv with deps
+      run: sudo apt install libpmemkv-dev
+
+    - name: Build pmemkv module of YCSB
+      run: mvn -pl site.ycsb:pmemkv-binding -am package
