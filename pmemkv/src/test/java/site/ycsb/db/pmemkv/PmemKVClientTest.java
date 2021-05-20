@@ -28,7 +28,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class PmemKVTest {
+public class PmemKVClientTest {
 
   @Rule
   public TemporaryFolder tmpFolder = new TemporaryFolder();
@@ -49,15 +49,15 @@ public class PmemKVTest {
     }
   }
 
-  private PmemKV instance;
+  private PmemKVClient instance;
 
   @Before
   public void setup() throws Exception {
-    instance = new PmemKV();
+    instance = new PmemKVClient();
 
     final Properties properties = new Properties();
-    properties.setProperty(PmemKV.PATH_PROPERTY, tmpFolder.getRoot().getAbsolutePath() + "/pmemkv_db");
-    properties.setProperty(PmemKV.SIZE_PROPERTY, "60777216");
+    properties.setProperty(PmemKVClient.PATH_PROPERTY, tmpFolder.getRoot().getAbsolutePath() + "/pmemkv_db");
+    properties.setProperty(PmemKVClient.SIZE_PROPERTY, "60777216");
     instance.setProperties(properties);
 
     instance.init();

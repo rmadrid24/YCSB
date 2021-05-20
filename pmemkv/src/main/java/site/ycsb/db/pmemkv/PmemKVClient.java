@@ -90,10 +90,10 @@ class MapToByteBufferConverter implements Converter<Map<String, ByteIterator>> {
 }
 
 /**
- * A class that wraps the PmemKV to allow it to be interfaced with YCSB.
+ * A class that wraps the PmemKVClient to allow it to be interfaced with YCSB.
  * This class extends {@link DB} and implements the database interface used by YCSB client.
  */
-public class PmemKV extends DB {
+public class PmemKVClient extends DB {
   public static final String ENGINE_PROPERTY = "pmemkv.engine";
   public static final String SIZE_PROPERTY = "pmemkv.dbsize";
   public static final String PATH_PROPERTY = "pmemkv.dbpath";
@@ -103,23 +103,23 @@ public class PmemKV extends DB {
 
   @Override
   public void init() throws DBException {
-    synchronized(PmemKV.class) {
+    synchronized(PmemKVClient.class) {
       if (db == null) {
         Properties props = getProperties();
-        String engineName = props.getProperty(ENGINE_PROPERTY);
-        if (engineName == null) {
-          engineName = "cmap";
-        }
+        // use cmap as default engine
+        String engineName = props.getProperty(ENGINE_PROPERTY, "cmap");
+
         String path = props.getProperty(PATH_PROPERTY);
         if (path == null) {
-          throw new DBException(PATH_PROPERTY + " is obligatory to run");
+          throw new DBException(PATH_PROPERTY + " is obligatory to run PmemKV client");
         }
         String size = props.getProperty(SIZE_PROPERTY);
         if (size == null) {
-          throw new DBException(SIZE_PROPERTY + " is obligatory to run");
+          throw new DBException(SIZE_PROPERTY + " is obligatory to run PmemKV client");
         }
         boolean startError = false;
         try {
+          // try to open db first
           db = new Database.Builder<byte[], Map<String, ByteIterator>>(engineName)
               .setSize(Long.parseLong(size))
               .setPath(path)
@@ -131,6 +131,7 @@ public class PmemKV extends DB {
         }
         if (startError) {
           try {
+            // or create it, if it doesn't exist
             db = new Database.Builder<byte[], Map<String, ByteIterator>>(engineName)
                 .setSize(Long.parseLong(size))
                 .setPath(path)
@@ -153,7 +154,7 @@ public class PmemKV extends DB {
    */
   @Override
   public void cleanup() {
-    synchronized(PmemKV.class) {
+    synchronized(PmemKVClient.class) {
       activeThreads--;
       if (activeThreads == 0 && db != null) {
         db.stop();

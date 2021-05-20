@@ -4,16 +4,9 @@
 name: Java CI with Maven
 
 on:
+  pull_request:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  workflow_dispatch:
-    inputs:
-      name:
-        description: "Manual trigger"
-        required: false
-        default: "Trigger"
 
 defaults:
   run:
@@ -34,16 +27,8 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: Install libpmemobj++ with dependencies
-      run: sudo apt update && sudo apt install libpmemobj-dev
     - name: Install libpmemkv with deps
       run: sudo apt install libpmemkv-dev
 
-    - name: Pull and install pmemkv-java
-      run: |
-        git clone https://github.com/pmem/pmemkv-java.git
-        cd pmemkv-java
-        mvn install
-
-    - name: Build YCSB
-      run: mvn package
+    - name: Build pmemkv module of YCSB
+      run: mvn -pl site.ycsb:pmemkv-binding -am package

@@ -39,7 +39,7 @@ LICENSE file.
     </dependency>
     <dependency>
       <groupId>io.pmem</groupId>
-      <artifactId>pmemkv</artifactId>
+      <artifactId>pmemkv-root</artifactId>
       <version>1.0.1</version>
     </dependency>
     <dependency>
