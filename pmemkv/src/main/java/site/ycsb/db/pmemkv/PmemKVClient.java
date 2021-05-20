@@ -90,10 +90,10 @@ class MapToByteBufferConverter implements Converter<Map<String, ByteIterator>> {
 }
 
 /**
- * A class that wraps the PmemKV to allow it to be interfaced with YCSB.
+ * A class that wraps the PmemKVClient to allow it to be interfaced with YCSB.
  * This class extends {@link DB} and implements the database interface used by YCSB client.
  */
-public class PmemKV extends DB {
+public class PmemKVClient extends DB {
   public static final String ENGINE_PROPERTY = "pmemkv.engine";
   public static final String SIZE_PROPERTY = "pmemkv.dbsize";
   public static final String PATH_PROPERTY = "pmemkv.dbpath";
@@ -103,7 +103,7 @@ public class PmemKV extends DB {
 
   @Override
   public void init() throws DBException {
-    synchronized(PmemKV.class) {
+    synchronized(PmemKVClient.class) {
       if (db == null) {
         Properties props = getProperties();
         // use cmap as default engine
@@ -154,7 +154,7 @@ public class PmemKV extends DB {
    */
   @Override
   public void cleanup() {
-    synchronized(PmemKV.class) {
+    synchronized(PmemKVClient.class) {
       activeThreads--;
       if (activeThreads == 0 && db != null) {
         db.stop();
