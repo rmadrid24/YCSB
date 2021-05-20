@@ -34,16 +34,5 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: Install libpmemobj++ with dependencies
-      run: sudo apt update && sudo apt install libpmemobj-dev
-    - name: Install libpmemkv with deps
-      run: sudo apt install libpmemkv-dev
-
-    - name: Pull and install pmemkv-java
-      run: |
-        git clone https://github.com/pmem/pmemkv-java.git
-        cd pmemkv-java
-        mvn install
-
     - name: Build YCSB
       run: mvn package

@@ -21,7 +21,14 @@ This driver is a binding for the YCSB facilities to operate against a [PmemKV](h
 ## Quick Start
 
 ### 1. Install PmemKV Java Binding
-Optionally compile and install the [Java binding](https://github.com/pmem/pmemkv-java) with its dependencies:
+Optionally you can compile and install the latest version of PmemKV Java binding.
+
+>Note: If you want to use custom installation, you'll have to update
+>this driver's `pom.xml`, changing `<artifactId>pmemkv-root</artifactId>`
+>into `<artifactId>pmemkv</artifactId>`!
+
+Simple follow [PmemKV Java installation instruction](https://github.com/pmem/pmemkv-java#installation),
+including at least:
 
     export JAVA_HOME=#PATH_TO_YOUR_JAVA_HOME
     git clone https://github.com/pmem/pmemkv-java.git
