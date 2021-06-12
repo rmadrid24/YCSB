@@ -135,6 +135,7 @@ LICENSE file.
     <maprhbase.version>1.1.8-mapr-1710</maprhbase.version>
     <mongodb.version>3.11.0</mongodb.version>
     <mongodb.async.version>2.0.1</mongodb.async.version>
+    <nvmmiddleware.version>1.0.0</nvmmiddleware.version>
     <openjpa.jdbc.version>2.1.1</openjpa.jdbc.version>
     <orientdb.version>2.2.37</orientdb.version>
     <pmemkv.version>1.0.0</pmemkv.version>
@@ -189,6 +190,7 @@ LICENSE file.
     <module>memcached</module>
     <module>mongodb</module>
     <module>nosqldb</module>
+    <module>nvmmiddleware</module>
     <module>orientdb</module>
     <module>pmemkv</module>
     <module>postgrenosql</module>
