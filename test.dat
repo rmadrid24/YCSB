@@ -1,20 +1,24 @@
 recordcount=10000
-#operationcount=100000
+#operationcount=1000
 #fieldlengthdistribution=constant
 fieldcount=1
-fieldlength=32
+fieldlength=1000
 measurementtype=hdrhistogram
 hdrhistogram.percentiles=99,99.99
 
-operationcount=429496729
-maxexecutiontime=600
+#operationcount=429496729
+#maxexecutiontime=600
 
 #redis.host=127.0.0.1
 #redis.port=6379
 
 # pmemkv config
-pmemkv.engine=cmap
-pmemkv.dbsize=644245094400
-pmemkv.dbpath=/mnt/pmem1/lat_pool.obj
+#pmemkv.engine=cmap
+#pmemkv.dbsize=1000000000
+#pmemkv.dbpath=/mnt/pmem1/test_pool.obj
+
+nvmmiddleware.host=127.0.0.1
+nvmmiddleware.port=50051
+nvmmiddleware.mode=interactive
 
 #memcached.hosts=127.0.0.1

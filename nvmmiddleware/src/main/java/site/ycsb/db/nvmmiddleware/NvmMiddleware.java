@@ -22,6 +22,8 @@ import site.ycsb.*;
 import java.io.*;
 import java.util.*;
 import site.ycsb.StringByteIterator;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import java.nio.ByteBuffer;
 
 import com.nvmmiddleware.grpc.client.NvmMiddlewareClient;
 
@@ -66,8 +68,10 @@ public class NvmMiddleware extends DB {
   @Override
   public Status update(final String table, final String key, final Map<String, ByteIterator> values) {
     try {
-      client.Put(key, values.get(key).toString());
+      //System.out.println("key: " + this.mapToStringConverter(values));
+      client.Put(key, this.mapToStringConverter(values));
     } catch (Exception e) {
+      e.printStackTrace();
       return Status.ERROR;
     }
     return Status.OK;
@@ -80,12 +84,42 @@ public class NvmMiddleware extends DB {
 
   @Override
   public Status insert(final String table, final String key, final Map<String, ByteIterator> values) {
-    return Status.NOT_IMPLEMENTED;
+    try {
+      client.Put(key, this.mapToStringConverter(values));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Status.ERROR;
+    }
+    return Status.OK;
   }
 
   @Override
   public Status scan(final String table, final String startkey, final int recordcount, final Set<String> fields,
                           final Vector<HashMap<String, ByteIterator>> result) {
     return Status.NOT_IMPLEMENTED;
+  }
+
+  private String mapToStringConverter(Map<String, ByteIterator> entries) {
+    try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+      final ByteBuffer buf = ByteBuffer.allocate(4);
+
+      for (final Map.Entry<String, ByteIterator> entry : entries.entrySet()) {
+        final byte[] keyBytes = entry.getKey().getBytes(UTF_8);
+        final byte[] valueBytes = entry.getValue().toArray();
+        buf.putInt(keyBytes.length);
+        baos.write(buf.array());
+        baos.write(keyBytes);
+        buf.clear();
+
+        buf.putInt(valueBytes.length);
+        baos.write(buf.array());
+        baos.write(valueBytes);
+        buf.clear();
+      }
+      return new String(baos.toByteArray());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }
