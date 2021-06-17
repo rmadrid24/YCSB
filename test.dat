@@ -2,12 +2,12 @@ recordcount=10000
 #operationcount=1000
 #fieldlengthdistribution=constant
 fieldcount=1
-fieldlength=1000
+#fieldlength=1000
 measurementtype=hdrhistogram
 hdrhistogram.percentiles=99,99.99
 
-#operationcount=429496729
-#maxexecutiontime=600
+operationcount=429496729
+maxexecutiontime=600
 
 #redis.host=127.0.0.1
 #redis.port=6379

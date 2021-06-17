@@ -1,8 +1,8 @@
 #!/bin/bash
 
-blockSizes=(8 32 128 512 1024 4096 1048576 4194304)
-numJobs=(1 4 8 16 32)
-rwmixread=(0.0 0.5 1.0)
+blockSizes=(1024)
+numJobs=(100)
+rwmixread=(0.0)
 #rwmixread=(0.0)
 
 #./bin/ycsb load pmemkv -s -P workloads/workloada -P test.dat
@@ -18,7 +18,7 @@ do
 		       	filename="workload_bs_${bs}_t_${t}_rwmix_${rwm}.dat"
 		       	#./bin/ycsb run redis -s -P workloads/workloada -P test.dat -p readproportion=$rwm -p updateproportion=$wmix -s -threads $t >> results/redis/$filename
 			#./bin/ycsb run memcached -s -P workloads/workloada -P test.dat -p readproportion=$rwm -p updateproportion=$wmix -s -threads $t >> results/memcached/$filename
-			./bin/ycsb run pmemkv -s -P workloads/workloada -P test.dat -p readproportion=$rwm -p updateproportion=$wmix -p fieldlength=$bs -s -threads $t >> results/tail_lat_results/$filename
+			./bin/ycsb run nvmmiddleware -s -P workloads/workloada -P test.dat -p readproportion=$rwm -p updateproportion=$wmix -p fieldlength=$bs -s -threads $t >> results/nvmmiddleware_results/$filename
 		done
 	done
 done
